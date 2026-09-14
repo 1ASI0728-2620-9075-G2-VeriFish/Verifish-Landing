@@ -1,0 +1,15 @@
+# OS & Editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.bak
+
+# IDEs
+.idea/
+.vscode/
+
+# Local configuration & secrets
+.env
+.env.*
+!.env.example
+*.log

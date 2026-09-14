@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>YakuControl — Hidro-Precisión Andina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --ink:       #04111c;
+  --ink-2:     #1a2e3d;
+  --ink-3:     #2e4a5e;
+  --mist:      #f0f4f7;
+  --mist-2:    #e2eaf0;
+  --mist-3:    #c8d8e4;
+  --cyan:      #3cf0de;
+  --cyan-dim:  #1bbfb0;
+  --cyan-dark: #0d8a80;
+  --blue:      #41befd;
+  --blue-dim:  #2990cc;
+  --red:       #e03535;
+  --white:     #ffffff;
+  --r:         8px;
+  --r-lg:      16px;
+  --r-xl:      24px;
+}
+
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--ink);line-height:1.6;overflow-x:hidden}
+
+/* ──────────────── UTILITIES ──────────────── */
+.container{max-width:1200px;margin:0 auto;padding:0 48px}
+@media(max-width:900px){.container{padding:0 24px}}
+
+.tag{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--cyan-dark);background:rgba(60,240,222,.1);
+  border:1px solid rgba(60,240,222,.3);
+  padding:5px 12px;border-radius:40px;
+}
+.tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--cyan);flex-shrink:0;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+/* ──────────────── ANIMATIONS ──────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes scanLine{0%{transform:translateY(-100%)}100%{transform:translateY(400%)}}
+@keyframes countUp{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+
+.anim-1{animation:fadeUp .7s ease both}
+.anim-2{animation:fadeUp .7s .15s ease both}
+.anim-3{animation:fadeUp .7s .3s ease both}
+.anim-4{animation:fadeUp .7s .45s ease both}
+
+/* ──────────────── HEADER ──────────────── */
+.site-header{
+  position:sticky;top:0;z-index:200;
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(16px) saturate(180%);
+  border-bottom:1px solid rgba(0,0,0,.07);
+}
+.header-inner{
+  display:flex;justify-content:space-between;align-items:center;
+  height:68px;
+}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{
+  width:34px;height:34px;border-radius:10px;
+  background:var(--ink);display:flex;align-items:center;justify-content:center;
+}
+.logo-mark svg{width:18px;height:18px}
+.logo-text{font-weight:600;font-size:17px;color:var(--ink);letter-spacing:-.02em}
+nav{display:flex;align-items:center;gap:6px}
+nav a{font-size:14px;font-weight:500;color:var(--ink-3);padding:7px 14px;border-radius:var(--r);text-decoration:none;transition:all .2s}
+nav a:hover{color:var(--ink);background:var(--mist)}
+.btn-nav{
+  background:var(--ink);color:var(--white)!important;
+  padding:8px 20px!important;border-radius:var(--r)!important;
+  font-size:14px!important;font-weight:600!important;
+  border:none;cursor:pointer;text-decoration:none;transition:all .2s!important;
+}
+.btn-nav:hover{background:var(--ink-2)!important;transform:translateY(-1px)!important}
+
+/* ──────────────── HERO ──────────────── */
+.hero{
+  position:relative;min-height:92vh;
+  display:flex;align-items:center;
+  overflow:hidden;
+  background:var(--ink);
+}
+.hero-grid-bg{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(60,240,222,.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(60,240,222,.06) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 40%,black 30%,transparent 80%);
+}
+.hero-glow{
+  position:absolute;top:-20%;right:-10%;
+  width:700px;height:700px;border-radius:50%;
+  background:radial-gradient(circle,rgba(65,190,253,.12) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-glow-2{
+  position:absolute;bottom:-20%;left:-10%;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(60,240,222,.08) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-inner{
+  position:relative;z-index:2;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:80px;align-items:center;padding:80px 0;
+}
+.hero-content{display:flex;flex-direction:column;gap:28px}
+.hero-title{
+  font-size:clamp(38px,5vw,62px);font-weight:300;
+  color:var(--white);line-height:1.1;letter-spacing:-.03em;
+}
+.hero-title strong{font-weight:600;display:block}
+.hero-title em{
+  font-style:italic;font-weight:300;
+  background:linear-gradient(90deg,var(--cyan),var(--blue));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{font-size:17px;color:rgba(255,255,255,.55);line-height:1.7;max-width:500px;font-weight:300}
+.hero-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--cyan);color:var(--ink);
+  font-weight:600;font-size:15px;padding:14px 28px;
+  border-radius:var(--r);border:none;cursor:pointer;text-decoration:none;
+  transition:all .25s;letter-spacing:-.01em;
+}
+.btn-primary:hover{background:#2de8d6;transform:translateY(-2px);box-shadow:0 12px 32px rgba(60,240,222,.3)}
+.btn-primary svg{width:16px;height:16px;transition:transform .2s}
+.btn-primary:hover svg{transform:translateX(3px)}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:8px;
+  color:rgba(255,255,255,.6);font-size:15px;font-weight:500;
+  text-decoration:none;transition:color .2s;padding:14px 4px;
+}
+.btn-ghost:hover{color:var(--white)}
+
+/* Hero stats */
+.hero-stats{
+  display:flex;gap:32px;padding-top:8px;
+  border-top:1px solid rgba(255,255,255,.1);
+}
+.stat-item{display:flex;flex-direction:column;gap:2px}
+.stat-num{font-size:24px;font-weight:600;color:var(--white);letter-spacing:-.03em}
+.stat-num span{color:var(--cyan);font-size:28px}
+.stat-label{font-size:12px;color:rgba(255,255,255,.4);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase}
+
+/* Hero dashboard mockup */
+.hero-visual{position:relative;animation:floatY 5s ease-in-out infinite}
+.dashboard-card{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:var(--r-xl);
+  overflow:hidden;backdrop-filter:blur(4px);
+}
+.dash-header{
+  background:rgba(0,0,0,.3);
+  padding:14px 20px;
+  display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.dot{width:10px;height:10px;border-radius:50%}
+.dot-r{background:#ff5f57}.dot-y{background:#febc2e}.dot-g{background:#28c840}
+.dash-title{font-family:'DM Mono',monospace;font-size:12px;color:rgba(255,255,255,.4);margin-left:8px}
+.dash-body{padding:20px}
+.dash-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
+.dash-label{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.dash-val{font-size:26px;font-weight:600;color:var(--white);letter-spacing:-.03em}
+.dash-val small{font-size:13px;color:var(--cyan);font-weight:400;font-family:'DM Mono',monospace}
+.status-pill{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(60,240,222,.15);color:var(--cyan);
+  border:1px solid rgba(60,240,222,.25);
+  font-family:'DM Mono',monospace;font-size:10px;padding:4px 10px;border-radius:40px;
+}
+.status-pill::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:pulse 2s infinite}
+/* mini chart */
+.mini-chart{
+  height:80px;display:flex;align-items:flex-end;gap:5px;
+  padding:0 4px;margin-bottom:16px;
+}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bar-fill{
+  width:100%;border-radius:3px 3px 0 0;
+  background:rgba(60,240,222,.25);
+  transition:background .3s;
+}
+.bar-fill.active{background:var(--cyan)}
+.bar-x{font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.25)}
+/* metrics row */
+.metrics-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.metric-chip{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  border-radius:var(--r);padding:10px 12px;
+}
+.mc-label{font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
+.mc-val{font-size:16px;font-weight:600;color:var(--white);letter-spacing:-.02em}
+.mc-val.good{color:var(--cyan)}
+.mc-val.warn{color:#f5a623}
+/* alert item */
+.alert-item{
+  display:flex;align-items:center;gap:12px;
+  background:rgba(224,53,53,.1);border:1px solid rgba(224,53,53,.2);
+  border-radius:var(--r);padding:10px 14px;margin-top:12px;
+}
+.alert-dot{width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0;animation:pulse 1.5s infinite}
+.alert-text{font-size:12px;color:rgba(255,255,255,.7)}
+.alert-text strong{color:var(--white);font-weight:600}
+/* scan line effect */
+.scan-overlay{
+  position:absolute;inset:0;overflow:hidden;pointer-events:none;border-radius:var(--r-xl);
+}
+.scan-line{
+  position:absolute;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(60,240,222,.3),transparent);
+  animation:scanLine 4s linear infinite;
+}
+
+/* ──────────────── TRUST BAR ──────────────── */
+.trust-bar{
+  border-top:1px solid var(--mist-2);
+  border-bottom:1px solid var(--mist-2);
+  padding:24px 0;background:var(--mist);
+}
+.trust-inner{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.trust-item{
+  display:flex;align-items:center;gap:10px;
+  font-size:13px;color:var(--ink-3);font-weight:500;
+}
+.trust-item svg{width:20px;height:20px;color:var(--cyan-dark);flex-shrink:0}
+
+/* ──────────────── SECTION COMMONS ──────────────── */
+.section{padding:100px 0}
+.section-label{
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--cyan-dark);margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;
+}
+.section-label::before{content:'';width:20px;height:1px;background:var(--cyan-dark)}
+.section-title{font-size:clamp(28px,4vw,44px);font-weight:300;letter-spacing:-.03em;color:var(--ink);line-height:1.15}
+.section-title strong{font-weight:600}
+.section-sub{font-size:17px;color:var(--ink-3);line-height:1.7;max-width:560px;font-weight:300;margin-top:12px}
+
+/* ──────────────── PROBLEM / SOLUTION ──────────────── */
+.ps-section{background:var(--white);padding:100px 0}
+.ps-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;border-radius:var(--r-xl);overflow:hidden}
+.ps-col{padding:56px;position:relative}
+.ps-problem{background:var(--mist)}
+.ps-solution{background:var(--ink);overflow:hidden}
+.ps-bg-circuit{
+  position:absolute;right:-30px;bottom:-30px;width:220px;height:220px;
+  opacity:.04;
+}
+.ps-head{margin-bottom:40px}
+.ps-label{
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  margin-bottom:10px;
+}
+.ps-label.prob{color:var(--red)}
+.ps-label.sol{color:var(--cyan)}
+.ps-h{font-size:22px;font-weight:600;letter-spacing:-.02em}
+.ps-h.prob{color:var(--ink)}
+.ps-h.sol{color:var(--white)}
+.ps-items{display:flex;flex-direction:column;gap:28px}
+.ps-item{display:flex;gap:16px;align-items:flex-start}
+.ps-icon{
+  width:40px;height:40px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.ps-icon.prob{background:rgba(224,53,53,.1)}
+.ps-icon.sol{background:rgba(60,240,222,.1)}
+.ps-icon svg{width:20px;height:20px}
+.ps-icon.prob svg{color:var(--red)}
+.ps-icon.sol svg{color:var(--cyan)}
+.ps-text h4{font-size:15px;font-weight:600;margin-bottom:4px;letter-spacing:-.01em}
+.ps-text p{font-size:14px;line-height:1.6;font-weight:300}
+.ps-problem .ps-text h4{color:var(--ink)}
+.ps-problem .ps-text p{color:var(--ink-3)}
+.ps-solution .ps-text h4{color:var(--white)}
+.ps-solution .ps-text p{color:rgba(255,255,255,.5)}
+
+/* ──────────────── IOT ECOSYSTEM ──────────────── */
+.iot-section{background:var(--ink);padding:100px 0}
+.iot-section .section-title{color:var(--white)}
+.iot-section .section-sub{color:rgba(255,255,255,.45)}
+.iot-header{margin-bottom:64px}
+.iot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.iot-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.07);
+  padding:40px 36px;
+  transition:all .3s;position:relative;overflow:hidden;
+}
+.iot-card:first-child{border-radius:var(--r-xl) 0 0 var(--r-xl)}
+.iot-card:last-child{border-radius:0 var(--r-xl) var(--r-xl) 0}
+.iot-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(60,240,222,.05) 0%,transparent 60%);
+  opacity:0;transition:opacity .3s;
+}
+.iot-card:hover{background:rgba(255,255,255,.07);transform:translateY(-4px)}
+.iot-card:hover::before{opacity:1}
+.iot-num{
+  font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,.2);
+  letter-spacing:.1em;margin-bottom:32px;
+}
+.iot-icon{
+  width:52px;height:52px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;margin-bottom:20px;
+}
+.iot-icon svg{width:26px;height:26px}
+.iot-icon-1{background:rgba(65,190,253,.15)} .iot-icon-1 svg{color:var(--blue)}
+.iot-icon-2{background:rgba(60,240,222,.15)} .iot-icon-2 svg{color:var(--cyan)}
+.iot-icon-3{background:rgba(180,140,255,.15)} .iot-icon-3 svg{color:#b48cff}
+.iot-title{font-size:18px;font-weight:600;color:var(--white);margin-bottom:10px;letter-spacing:-.02em}
+.iot-desc{font-size:14px;color:rgba(255,255,255,.45);line-height:1.7;font-weight:300}
+.iot-spec{
+  display:flex;align-items:center;gap:6px;
+  margin-top:24px;font-family:'DM Mono',monospace;
+  font-size:11px;color:rgba(255,255,255,.3);
+}
+.iot-spec::before{content:'';width:16px;height:1px;background:rgba(255,255,255,.2)}
+
+/* ──────────────── DASHBOARD SECTION ──────────────── */
+.dash-section{padding:100px 0;background:var(--mist)}
+.dash-layout{display:grid;grid-template-columns:1fr 1.1fr;gap:80px;align-items:center}
+.dash-content{display:flex;flex-direction:column;gap:32px}
+.feature-list{display:flex;flex-direction:column;gap:16px;margin-top:8px}
+.feature-item{
+  display:flex;align-items:center;gap:16px;
+  padding:18px 20px;background:var(--white);
+  border-radius:var(--r-lg);border:1px solid var(--mist-2);
+  transition:all .25s;
+}
+.feature-item:hover{border-color:var(--mist-3);transform:translateX(4px)}
+.fi-icon{
+  width:38px;height:38px;border-radius:10px;
+  background:rgba(13,138,128,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.fi-icon svg{width:20px;height:20px;color:var(--cyan-dark)}
+.fi-text{font-size:14px;font-weight:500;color:var(--ink)}
+
+/* Full dashboard card */
+.full-dash{
+  background:var(--white);border-radius:var(--r-xl);
+  border:1px solid var(--mist-2);overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.08);
+}
+.fd-header{
+  padding:16px 20px;border-bottom:1px solid var(--mist-2);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.fd-title{font-size:14px;font-weight:600;color:var(--ink);letter-spacing:-.01em}
+.fd-status{
+  display:flex;align-items:center;gap:5px;
+  font-family:'DM Mono',monospace;font-size:10px;color:var(--cyan-dark);
+  background:rgba(60,240,222,.1);border:1px solid rgba(60,240,222,.2);
+  padding:3px 10px;border-radius:40px;
+}
+.fd-status::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--cyan-dark);animation:pulse 2s infinite}
+.fd-body{padding:20px}
+/* chart */
+.fd-chart{
+  height:130px;display:flex;align-items:flex-end;gap:6px;
+  background:var(--mist);border-radius:var(--r);padding:16px;margin-bottom:16px;
+  position:relative;overflow:hidden;
+}
+.fd-chart::after{
+  content:'';position:absolute;left:0;right:0;bottom:0;height:40%;
+  background:linear-gradient(to top,rgba(60,240,222,.05),transparent);
+  pointer-events:none;
+}
+.fd-bar{flex:1;border-radius:3px 3px 0 0;background:rgba(60,240,222,.2);transition:background .3s;min-height:8px}
+.fd-bar.hi{background:var(--cyan-dark)}
+.fd-bar:hover{background:var(--cyan)}
+/* metrics */
+.fd-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.fd-metric{
+  background:var(--mist);border-radius:var(--r);padding:14px;
+  border:1px solid var(--mist-2);
+}
+.fdm-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase;margin-bottom:6px}
+.fdm-val{font-size:20px;font-weight:600;color:var(--ink);letter-spacing:-.03em}
+.fdm-val span{font-size:12px;font-weight:400;color:var(--cyan-dark);margin-left:2px}
+/* pond list */
+.pond-list{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.pond-row{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 12px;border-radius:var(--r);
+  border:1px solid var(--mist-2);
+  font-size:13px;
+}
+.pond-id{font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-3);min-width:60px}
+.pond-bar{flex:1;height:4px;background:var(--mist-2);border-radius:2px;overflow:hidden}
+.pond-fill{height:100%;border-radius:2px}
+.good-fill{background:var(--cyan-dark)}
+.warn-fill{background:#f5a623}
+.pond-score{font-family:'DM Mono',monospace;font-size:12px;font-weight:500}
+.s-good{color:var(--cyan-dark)}.s-warn{color:#e8960a}
+
+/* ──────────────── REMOTE ACTION ──────────────── */
+.action-section{padding:100px 0;background:var(--ink-2)}
+.action-section .section-title{color:var(--white)}
+.action-section .section-sub{color:rgba(255,255,255,.45)}
+.action-header{margin-bottom:60px}
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.action-card{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);
+  border-radius:var(--r-xl);padding:36px;
+  transition:all .3s;
+}
+.action-card:hover{background:rgba(255,255,255,.08);transform:translateY(-3px)}
+.ac-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:28px}
+.ac-icon{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.ac-icon svg{width:22px;height:22px}
+.ac-icon-red{background:rgba(224,53,53,.2)} .ac-icon-red svg{color:#ff6b6b}
+.ac-icon-blue{background:rgba(65,190,253,.2)} .ac-icon-blue svg{color:var(--blue)}
+.ac-info h4{font-size:16px;font-weight:600;color:var(--white);margin-bottom:4px;letter-spacing:-.01em}
+.ac-info p{font-size:13px;color:rgba(255,255,255,.45);line-height:1.5}
+.ac-btns{display:flex;gap:10px}
+.btn-action{
+  flex:1;padding:12px 16px;border-radius:var(--r);
+  font-size:13px;font-weight:600;letter-spacing:-.01em;
+  cursor:pointer;border:none;transition:all .2s;
+}
+.btn-danger{background:var(--red);color:var(--white)}
+.btn-danger:hover{background:#c92f2f;transform:translateY(-1px)}
+.btn-teal{background:var(--cyan);color:var(--ink)}
+.btn-teal:hover{background:#2de8d6;transform:translateY(-1px)}
+.btn-outline-w{
+  background:transparent;color:rgba(255,255,255,.5);
+  border:1px solid rgba(255,255,255,.15);
+}
+.btn-outline-w:hover{color:var(--white);border-color:rgba(255,255,255,.35)}
+
+/* ──────────────── PRICING ──────────────── */
+.pricing-section{padding:100px 0;background:var(--white)}
+.pricing-header{text-align:center;margin-bottom:64px}
+.pricing-header .section-label{justify-content:center}
+.pricing-header .section-label::before{display:none}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--mist-2);border-radius:var(--r-xl);overflow:hidden}
+.pricing-card{
+  padding:48px 40px;
+  border-right:1px solid var(--mist-2);
+  display:flex;flex-direction:column;gap:0;
+  transition:all .3s;position:relative;
+}
+.pricing-card:last-child{border-right:none}
+.pricing-card.featured{background:var(--ink);z-index:2}
+.pricing-card:not(.featured):hover{background:var(--mist)}
+.pc-badge{
+  position:absolute;top:20px;right:20px;
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink);background:var(--cyan);
+  padding:4px 12px;border-radius:40px;
+}
+.pc-name{font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px}
+.pricing-card:not(.featured) .pc-name{color:var(--ink-3)}
+.pricing-card.featured .pc-name{color:var(--cyan)}
+.pc-desc{font-size:13px;font-weight:300;margin-bottom:32px}
+.pricing-card:not(.featured) .pc-desc{color:var(--ink-3)}
+.pricing-card.featured .pc-desc{color:rgba(255,255,255,.45)}
+.pc-price{margin-bottom:36px}
+.pc-amount{font-size:42px;font-weight:600;letter-spacing:-.04em}
+.pricing-card:not(.featured) .pc-amount{color:var(--ink)}
+.pricing-card.featured .pc-amount{color:var(--white)}
+.pc-period{font-size:13px;font-weight:300}
+.pricing-card:not(.featured) .pc-period{color:var(--ink-3)}
+.pricing-card.featured .pc-period{color:rgba(255,255,255,.4)}
+.pc-divider{height:1px;margin-bottom:28px}
+.pricing-card:not(.featured) .pc-divider{background:var(--mist-2)}
+.pricing-card.featured .pc-divider{background:rgba(255,255,255,.1)}
+.pc-features{list-style:none;display:flex;flex-direction:column;gap:14px;flex:1;margin-bottom:36px}
+.pc-features li{display:flex;align-items:center;gap:10px;font-size:14px}
+.pricing-card:not(.featured) .pc-features li{color:var(--ink-2)}
+.pricing-card.featured .pc-features li{color:rgba(255,255,255,.75)}
+.check-icon{
+  width:18px;height:18px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.pricing-card:not(.featured) .check-icon{background:rgba(13,138,128,.12)}
+.pricing-card.featured .check-icon{background:rgba(60,240,222,.15)}
+.check-icon svg{width:10px;height:10px}
+.pricing-card:not(.featured) .check-icon svg{color:var(--cyan-dark)}
+.pricing-card.featured .check-icon svg{color:var(--cyan)}
+.btn-pricing{
+  width:100%;padding:14px;border-radius:var(--r);
+  font-size:14px;font-weight:600;letter-spacing:-.01em;
+  cursor:pointer;border:none;transition:all .2s;
+}
+.btn-pricing-outline{
+  background:transparent;
+  border:1px solid var(--mist-2);
+  color:var(--ink);
+}
+.btn-pricing-outline:hover{border-color:var(--mist-3);background:var(--mist)}
+.btn-pricing-primary{background:var(--cyan);color:var(--ink)}
+.btn-pricing-primary:hover{background:#2de8d6;transform:translateY(-2px)}
+.btn-pricing-ghost{
+  background:rgba(255,255,255,.1);color:var(--white);
+  border:1px solid rgba(255,255,255,.15);
+}
+.btn-pricing-ghost:hover{background:rgba(255,255,255,.18)}
+
+/* ──────────────── FAQ ──────────────── */
+.faq-section{padding:100px 0;background:var(--mist)}
+.faq-layout{display:grid;grid-template-columns:1fr 2fr;gap:80px}
+.faq-sticky{position:sticky;top:100px;height:fit-content}
+.faq-note{margin-top:20px;font-size:13px;color:var(--ink-3);line-height:1.6}
+.faq-list{display:flex;flex-direction:column}
+.faq-item{border-bottom:1px solid var(--mist-2)}
+.faq-item:first-child{border-top:1px solid var(--mist-2)}
+.faq-q{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:22px 0;cursor:pointer;gap:20px;
+}
+.faq-q h4{font-size:15px;font-weight:500;color:var(--ink);letter-spacing:-.01em;line-height:1.4}
+.faq-toggle{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--mist-2);border:1px solid var(--mist-3);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all .3s;
+}
+.faq-toggle svg{width:14px;height:14px;color:var(--ink-3);transition:transform .3s}
+.faq-item.open .faq-toggle{background:var(--ink);border-color:var(--ink)}
+.faq-item.open .faq-toggle svg{color:var(--white);transform:rotate(45deg)}
+.faq-a{display:none;padding-bottom:22px;padding-right:48px}
+.faq-a p{font-size:14px;color:var(--ink-3);line-height:1.75;font-weight:300}
+.faq-item.open .faq-a{display:block}
+
+/* ──────────────── FOOTER ──────────────── */
+.site-footer{background:var(--ink);padding:72px 0 0}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.5fr;gap:48px;padding-bottom:60px;border-bottom:1px solid rgba(255,255,255,.08)}
+.footer-brand{}
+.footer-logo{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.footer-logo-mark{
+  width:32px;height:32px;border-radius:9px;background:rgba(60,240,222,.1);
+  border:1px solid rgba(60,240,222,.2);display:flex;align-items:center;justify-content:center;
+}
+.footer-logo-mark svg{width:16px;height:16px;color:var(--cyan)}
+.footer-logo span{font-size:16px;font-weight:600;color:var(--white)}
+.footer-desc{font-size:13px;color:rgba(255,255,255,.35);line-height:1.7;max-width:240px}
+.footer-heading{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:20px}
+.footer-links{display:flex;flex-direction:column;gap:12px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.4);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--white)}
+.footer-newsletter p{font-size:13px;color:rgba(255,255,255,.4);line-height:1.6;margin-bottom:16px}
+.newsletter-row{display:flex;height:42px;border-radius:var(--r);overflow:hidden;border:1px solid rgba(255,255,255,.12)}
+.newsletter-row input{
+  flex:1;background:rgba(255,255,255,.05);border:none;outline:none;
+  padding:0 14px;color:var(--white);font-size:13px;font-family:'DM Sans',sans-serif;
+}
+.newsletter-row input::placeholder{color:rgba(255,255,255,.25)}
+.newsletter-row button{
+  background:var(--cyan);color:var(--ink);border:none;cursor:pointer;
+  padding:0 18px;font-size:13px;font-weight:600;transition:all .2s;font-family:'DM Sans',sans-serif;
+}
+.newsletter-row button:hover{background:#2de8d6}
+.social-row{display:flex;gap:10px;margin-top:20px}
+.soc-btn{
+  width:36px;height:36px;border-radius:var(--r);
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;text-decoration:none;
+  transition:all .2s;
+}
+.soc-btn svg{width:15px;height:15px;color:rgba(255,255,255,.5)}
+.soc-btn:hover{background:rgba(255,255,255,.14)} .soc-btn:hover svg{color:var(--white)}
+.footer-bottom{
+  padding:20px 0;display:flex;justify-content:space-between;align-items:center;gap:16px;
+}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.25)}
+.footer-tag{
+  font-family:'DM Mono',monospace;font-size:10px;
+  color:rgba(60,240,222,.4);
+}
+
+/* ──────────────── RESPONSIVE ──────────────── */
+@media(max-width:1024px){
+  .hero-inner,.dash-layout,.faq-layout{grid-template-columns:1fr;gap:48px}
+  .hero-visual{display:none}
+  .ps-grid{grid-template-columns:1fr}
+  .action-grid{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr;border-radius:var(--r-xl)}
+  .pricing-card{border-right:none;border-bottom:1px solid var(--mist-2)}
+  .pricing-card:last-child{border-bottom:none}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .iot-grid{grid-template-columns:1fr}
+  .iot-card:first-child,.iot-card:last-child{border-radius:0}
+}
+@media(max-width:768px){
+  .section,.hero{padding:70px 0}
+  .hero-stats{gap:20px}
+  nav a:not(.btn-nav){display:none}
+  .hero-title{font-size:36px}
+  .ps-col{padding:36px 28px}
+  .footer-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ════ HEADER ════ -->
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="#" class="logo">
+        <div class="logo-mark">
+          <svg viewBox="0 0 18 18" fill="none">
+            <circle cx="9" cy="9" r="7" stroke="#3cf0de" stroke-width="1.5"/>
+            <path d="M9 5v4l3 2" stroke="#3cf0de" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 9h1M14 9h1M9 3v1M9 14v1" stroke="#3cf0de" stroke-width="1" stroke-linecap="round" opacity=".4"/>
+          </svg>
+        </div>
+        <span class="logo-text">YakuControl</span>
+      </a>
+      <nav>
+        <a href="#section-problem">Soluciones</a>
+        <a href="#section-iot">Tecnología</a>
+        <a href="#section-pricing">Precios</a>
+        <a href="#section-faq">FAQ</a>
+        <a href="#section-pricing" class="btn-nav">Solicitar Demo</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<!-- ════ HERO ════ -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow-2"></div>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="tag anim-1">Hidro-Precisión Andina</div>
+        <h1 class="hero-title anim-2">
+          <em>Asegura</em> tus Bio-Activos.<br>
+          <strong>Maximiza</strong> tu Rendimiento.
+        </h1>
+        <p class="hero-sub anim-3">Ecosistemas inteligentes de IoT para la acuicultura andina. Monitoreo en tiempo real, IA predictiva y conectividad satelital para granjas de trucha a gran altitud.</p>
+        <div class="hero-actions anim-4">
+          <a href="#section-pricing" class="btn-primary">
+            Agendar Auditoría Técnica
+            <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#section-iot" class="btn-ghost">
+            Ver Tecnología
+            <svg viewBox="0 0 16 16" fill="none" style="width:14px;height:14px"><path d="M8 3v10M3 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+        <div class="hero-stats anim-4">
+          <div class="stat-item">
+            <div class="stat-num"><span>99</span>.9%</div>
+            <div class="stat-label">Uptime garantizado</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num"><span>&lt;1</span>s</div>
+            <div class="stat-label">Latencia de alerta</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num"><span>12</span>h</div>
+            <div class="stat-label">Predicción anticipada</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard Mockup -->
+      <div class="hero-visual anim-3">
+        <div class="dashboard-card">
+          <div class="scan-overlay"><div class="scan-line"></div></div>
+          <div class="dash-header">
+            <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+            <span class="dash-title">yakucontrol / estanques</span>
+          </div>
+          <div class="dash-body">
+            <div class="dash-top">
+              <div>
+                <div class="dash-label">ICA Global</div>
+                <div class="dash-val">87.4 <small>/ 100</small></div>
+              </div>
+              <div class="status-pill">OPERANDO</div>
+            </div>
+            <div class="mini-chart">
+              <div class="bar-wrap"><div class="bar-fill" style="height:55%"></div><div class="bar-x">L</div></div>
+              <div class="bar-wrap"><div class="bar-fill" style="height:70%"></div><div class="bar-x">M</div></div>
+              <div class="bar-wrap"><div class="bar-fill" style="height:60%"></div><div class="bar-x">M</div></div>
+              <div class="bar-wrap"><div class="bar-fill active" style="height:88%"></div><div class="bar-x">J</div></div>
+              <div class="bar-wrap"><div class="bar-fill" style="height:75%"></div><div class="bar-x">V</div></div>
+              <div class="bar-wrap"><div class="bar-fill" style="height:65%"></div><div class="bar-x">S</div></div>
+              <div class="bar-wrap"><div class="bar-fill" style="height:80%"></div><div class="bar-x">D</div></div>
+            </div>
+            <div class="metrics-row">
+              <div class="metric-chip"><div class="mc-label">O₂</div><div class="mc-val good">8.4</div></div>
+              <div class="metric-chip"><div class="mc-label">pH</div><div class="mc-val good">7.2</div></div>
+              <div class="metric-chip"><div class="mc-label">Temp</div><div class="mc-val warn">12.5°</div></div>
+            </div>
+            <div class="alert-item">
+              <div class="alert-dot"></div>
+              <div class="alert-text"><strong>Estanque 04</strong> — O₂ bajo: 3.2 mg/L</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ TRUST BAR ════ -->
+<div class="trust-bar">
+  <div class="container">
+    <div class="trust-inner">
+      <div class="trust-item">
+        <svg viewBox="0 0 20 20" fill="none"><path d="M10 2L3 6v5c0 4 3.5 7.5 7 8.5 3.5-1 7-4.5 7-8.5V6L10 2z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+        Certificado IP68 para inmersión continua
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M10 6v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Monitoreo 24/7 con redundancia satelital
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 20 20" fill="none"><path d="M2 10h4l3 7 4-14 3 7h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        IA predictiva 12h de anticipación
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 20 20" fill="none"><path d="M10 2C5.5 2 2 5.5 2 10s3.5 8 8 8 8-3.5 8-8-3.5-8-8-8z" stroke="currentColor" stroke-width="1.5"/><path d="M2 10h16" stroke="currentColor" stroke-width="1.5"/><path d="M10 2c-2.5 2-4 5-4 8s1.5 6 4 8c2.5-2 4-5 4-8s-1.5-6-4-8z" stroke="currentColor" stroke-width="1.5"/></svg>
+        Cobertura Iridium global
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ PROBLEM / SOLUTION ════ -->
+<section id="section-problem" class="ps-section">
+  <div class="container">
+    <div class="ps-grid">
+      <div class="ps-col ps-problem">
+        <div class="ps-head">
+          <div class="ps-label prob">— El riesgo</div>
+          <h3 class="ps-h prob">Operando a ciegas en la altitud</h3>
+        </div>
+        <div class="ps-items">
+          <div class="ps-item">
+            <div class="ps-icon prob">
+              <svg viewBox="0 0 20 20" fill="none"><path d="M10 3L2 16h16L10 3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 8v4M10 13.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="ps-text">
+              <h4>Datos fragmentados y tardíos</h4>
+              <p>Las revisiones físicas generan retrasos de 4–6 horas en la detección de caídas críticas de oxígeno, cuando el daño ya es irreversible.</p>
+            </div>
+          </div>
+          <div class="ps-item">
+            <div class="ps-icon prob">
+              <svg viewBox="0 0 20 20" fill="none"><path d="M3 3l14 14M7 3H3v4M17 13v4h-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="ps-text">
+              <h4>Aislamiento geográfico</h4>
+              <p>El terreno andino crea zonas muertas celulares persistentes, dejando estanques enteros sin supervisión durante horas críticas.</p>
+            </div>
+          </div>
+          <div class="ps-item">
+            <div class="ps-icon prob">
+              <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M10 6v5l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="ps-text">
+              <h4>Reacción reactiva, no predictiva</h4>
+              <p>Sin IA, los problemas se tratan cuando ya se ven. Para entonces, el estrés biológico ha reducido la conversión alimenticia y el crecimiento.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ps-col ps-solution">
+        <svg class="ps-bg-circuit" viewBox="0 0 200 200" fill="none">
+          <circle cx="100" cy="100" r="80" stroke="white" stroke-width="1"/>
+          <circle cx="100" cy="100" r="50" stroke="white" stroke-width="1"/>
+          <circle cx="100" cy="100" r="20" stroke="white" stroke-width="1"/>
+          <line x1="100" y1="20" x2="100" y2="50" stroke="white" stroke-width="2"/>
+          <line x1="180" y1="100" x2="150" y2="100" stroke="white" stroke-width="2"/>
+          <line x1="100" y1="180" x2="100" y2="150" stroke="white" stroke-width="2"/>
+          <line x1="20" y1="100" x2="50" y2="100" stroke="white" stroke-width="2"/>
+        </svg>
+        <div class="ps-head">
+          <div class="ps-label sol">— El estándar</div>
+          <h3 class="ps-h sol">YakuControl: Control total</h3>
+        </div>
+        <div class="ps-items">
+          <div class="ps-item">
+            <div class="ps-icon sol">
+              <svg viewBox="0 0 20 20" fill="none"><path d="M2 10h4l3 7 4-14 3 7h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="ps-text">
+              <h4>Latencia de milisegundos 24/7</h4>
+              <p>Sub-segundo en reportes de OD, pH y temperatura con redundancia híbrida satelital/celular. Sin puntos ciegos.</p>
+            </div>
+          </div>
+          <div class="ps-item">
+            <div class="ps-icon sol">
+              <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="ps-text">
+              <h4>IA predictiva con 12h de anticipación</h4>
+              <p>Nuestros algoritmos detectan el estrés biológico antes de que aparezcan síntomas físicos, dándote tiempo para actuar.</p>
+            </div>
+          </div>
+          <div class="ps-item">
+            <div class="ps-icon sol">
+              <svg viewBox="0 0 20 20" fill="none"><path d="M10 2v4M10 14v4M2 10h4M14 10h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/></svg>
+            </div>
+            <div class="ps-text">
+              <h4>Control remoto total del hardware</h4>
+              <p>Activa bombas de aireación, ajusta ciclos de alimentación y recalibra sensores desde cualquier lugar del mundo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ IOT ECOSYSTEM ════ -->
+<section id="section-iot" class="iot-section">
+  <div class="container">
+    <div class="iot-header">
+      <div class="section-label" style="color:rgba(60,240,222,.6)">
+        <span style="background:rgba(60,240,222,.5)"></span>Ecosistema tecnológico
+      </div>
+      <h2 class="section-title" style="color:white">Hardware industrial.<br><strong>Software ejecutivo.</strong></h2>
+      <p class="section-sub">Tres capas integradas que trabajan en sincronía para que tu granja opere al nivel de la industria global.</p>
+    </div>
+    <div class="iot-grid">
+      <div class="iot-card">
+        <div class="iot-num">01</div>
+        <div class="iot-icon iot-icon-1">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 9h18M9 21V9" stroke="currentColor" stroke-width="1.5"/><circle cx="16" cy="15" r="2" stroke="currentColor" stroke-width="1.5"/></svg>
+        </div>
+        <h3 class="iot-title">AcuaNode Industrial</h3>
+        <p class="iot-desc">Sensores de titanio anti-incrustantes diseñados para las gélidas noches andinas. Medición simultánea de OD, pH, temperatura y turbidez.</p>
+        <div class="iot-spec">IP68 · Titanio grado 5 · -20°C a +60°C</div>
+      </div>
+      <div class="iot-card">
+        <div class="iot-num">02</div>
+        <div class="iot-icon iot-icon-2">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="5" y="2" width="14" height="20" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M9 18h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M9 7h6M9 11h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <h3 class="iot-title">Mobile Commander</h3>
+        <p class="iot-desc">Alertas omnicanal vía SMS, Push y Satélite. Los técnicos de campo reciben instrucciones precisas y pueden actuar desde cualquier punto de la sierra.</p>
+        <div class="iot-spec">SMS · Push · Iridium SBD · Offline-first</div>
+      </div>
+      <div class="iot-card">
+        <div class="iot-num">03</div>
+        <div class="iot-icon iot-icon-3">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 21h8M12 17v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M6 10l2 2 4-4 2 2 2-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 class="iot-title">YakuCore Web</h3>
+        <p class="iot-desc">Dashboard ejecutivo con análisis profundo, mapeo de tendencias históricas y el Índice de Calidad del Agua (ICA) por estanque en múltiples sitios.</p>
+        <div class="iot-spec">Multi-sitio · Marca blanca · API REST</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ DASHBOARD ════ -->
+<section id="section-dashboard" class="dash-section">
+  <div class="container">
+    <div class="dash-layout">
+      <div class="dash-content">
+        <div>
+          <div class="section-label">Inteligencia operacional</div>
+          <h2 class="section-title">Datos crudos,<br><strong>decisiones precisas.</strong></h2>
+          <p class="section-sub">El tablero YakuCore transforma parámetros ambientales en métricas de crecimiento estratégico. Cada decisión respaldada por datos en tiempo real.</p>
+        </div>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="fi-icon">
+              <svg viewBox="0 0 20 20" fill="none"><path d="M4 14l4-4 3 3 5-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <span class="fi-text">Optimización de Conversión Alimenticia en tiempo real</span>
+          </div>
+          <div class="feature-item">
+            <div class="fi-icon">
+              <svg viewBox="0 0 20 20" fill="none"><path d="M2 17l4-8 4 4 4-6 4 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <span class="fi-text">Análisis de OPEX y seguimiento de costos energéticos</span>
+          </div>
+          <div class="feature-item">
+            <div class="fi-icon">
+              <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M10 6v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <span class="fi-text">Historial de 24 meses con predicción de ciclos</span>
+          </div>
+        </div>
+      </div>
+      <!-- Full dashboard -->
+      <div class="full-dash">
+        <div class="fd-header">
+          <span class="fd-title">Índice de Calidad del Agua — Multi-estanque</span>
+          <span class="fd-status">EN VIVO</span>
+        </div>
+        <div class="fd-body">
+          <div class="fd-chart">
+            <div class="fd-bar" style="height:60%"></div>
+            <div class="fd-bar" style="height:55%"></div>
+            <div class="fd-bar" style="height:72%"></div>
+            <div class="fd-bar" style="height:68%"></div>
+            <div class="fd-bar hi" style="height:87%"></div>
+            <div class="fd-bar" style="height:75%"></div>
+            <div class="fd-bar" style="height:70%"></div>
+            <div class="fd-bar" style="height:65%"></div>
+            <div class="fd-bar" style="height:80%"></div>
+            <div class="fd-bar" style="height:85%"></div>
+            <div class="fd-bar hi" style="height:91%"></div>
+            <div class="fd-bar" style="height:78%"></div>
+          </div>
+          <div class="fd-metrics">
+            <div class="fd-metric">
+              <div class="fdm-label">Oxígeno</div>
+              <div class="fdm-val">8.4 <span>mg/L</span></div>
+            </div>
+            <div class="fd-metric">
+              <div class="fdm-label">pH</div>
+              <div class="fdm-val">7.2 <span>ideal</span></div>
+            </div>
+            <div class="fd-metric">
+              <div class="fdm-label">Temp.</div>
+              <div class="fdm-val">12.5 <span>°C</span></div>
+            </div>
+          </div>
+          <div class="pond-list">
+            <div class="pond-row">
+              <span class="pond-id">E-01</span>
+              <div class="pond-bar"><div class="pond-fill good-fill" style="width:92%"></div></div>
+              <span class="pond-score s-good">92</span>
+            </div>
+            <div class="pond-row">
+              <span class="pond-id">E-02</span>
+              <div class="pond-bar"><div class="pond-fill good-fill" style="width:87%"></div></div>
+              <span class="pond-score s-good">87</span>
+            </div>
+            <div class="pond-row" style="border-color:#f5a62340;background:rgba(245,166,35,.04)">
+              <span class="pond-id">E-04</span>
+              <div class="pond-bar"><div class="pond-fill warn-fill" style="width:41%"></div></div>
+              <span class="pond-score s-warn">41</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ REMOTE ACTION ════ -->
+<section id="section-action" class="action-section">
+  <div class="container">
+    <div class="action-header">
+      <div class="section-label" style="color:rgba(60,240,222,.6)"><span style="background:rgba(60,240,222,.5)"></span>Centro de acción remota</div>
+      <h2 class="section-title" style="color:white">Cuando ocurre lo inesperado,<br><strong>el tiempo lo es todo.</strong></h2>
+      <p class="section-sub">Controla el hardware de cualquier estanque desde cualquier lugar del planeta. Sin intermediarios, sin demoras.</p>
+    </div>
+    <div class="action-grid">
+      <div class="action-card">
+        <div class="ac-top">
+          <div class="ac-icon ac-icon-red">
+            <svg viewBox="0 0 22 22" fill="none"><path d="M11 3L2 18h18L11 3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M11 9v4M11 14.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="ac-info">
+            <h4>Aireación de Emergencia</h4>
+            <p>Estanque 04 · Oxígeno crítico: 3.2 mg/L<br>Umbral de estrés biológico superado</p>
+          </div>
+        </div>
+        <div class="ac-btns">
+          <button class="btn-action btn-danger">Activar Bombas</button>
+          <button class="btn-action btn-outline-w">Ignorar</button>
+        </div>
+      </div>
+      <div class="action-card">
+        <div class="ac-top">
+          <div class="ac-icon ac-icon-blue">
+            <svg viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M11 7v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="ac-info">
+            <h4>Alimentación Automatizada</h4>
+            <p>Ciclo programado en 47 minutos · 14:00 PM<br>Tasa de conversión óptima confirmada</p>
+          </div>
+        </div>
+        <div class="ac-btns">
+          <button class="btn-action btn-teal">Forzar Ciclo</button>
+          <button class="btn-action btn-outline-w">Editar Horario</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ PRICING ════ -->
+<section id="section-pricing" class="pricing-section">
+  <div class="container">
+    <div class="pricing-header">
+      <div class="section-label">Planes</div>
+      <h2 class="section-title">Precisión <strong>escalable</strong></h2>
+      <p class="section-sub" style="margin:0 auto;text-align:center">Desde granjas artesanales hasta conglomerados industriales. Sin contratos de permanencia en los primeros 30 días.</p>
+    </div>
+    <div class="pricing-grid">
+      <!-- Básico -->
+      <div class="pricing-card">
+        <div class="pc-name">Básico</div>
+        <div class="pc-desc">Para monitoreo individual de estanques. Ideal para granjas menores de 5 unidades.</div>
+        <div class="pc-price">
+          <div class="pc-amount">$39</div>
+          <div class="pc-period">por estanque / mes</div>
+        </div>
+        <div class="pc-divider"></div>
+        <ul class="pc-features">
+          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Soporte AcuaNode estándar</li>
+          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Hasta 5 estanques</li>
+          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Alertas por app y SMS</li>
+          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Dashboard YakuCore Web</li>
+        </ul>
+        <button class="btn-pricing btn-pricing-outline">Comenzar</button>
+      </div>
+      <!-- Escala -->
+      <div class="pricing-card featured">
+        <div class="pc-badge">Más popular</div>
+        <div class="pc-name">Escala</div>
+        <div class="pc-desc">Gestión profesional de granjas medianas con control remoto completo.</div>
+        <div class="pc-price">
+          <div class="pc-amount" style="color:white">$109</div>
+          <div class="pc-period">por estanque / mes</div>
+        </div>
+        <div class="pc-divider"></div>
+        <ul class="pc-features">
+          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Hasta 12 estanques</li>
+          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Control de hardware remoto</li>
+          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>IA predictiva completa</li>
+          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Soporte de campo prioritario</li>
+          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Conectividad satelital Iridium</li>
+        </ul>
+        <a href="https://yakufrontend.z13.web.core.windows.net/" class="btn-pricing btn-pricing-primary">Iniciar Prueba Gratis</a>
+      </div>
+      <!-- Corporativo -->
+      <div class="pricing-card">
+        <div class="pc-name">Corporativo</div>
+        <div class="pc-desc">Infraestructura personalizada multi-sitio para conglomerados industriales.</div>
+        <div class="pc-price">
+          <div class="pc-amount" style="font-size:28px;padding-top:8px">Personalizado</div>
+        </div>
+        <div class="pc-divider"></div>
+        <ul class="pc-features">
+          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Nodos de monitoreo ilimitados</li>
+          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Reportes ejecutivos marca blanca</li>
+          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Calibración en sitio</li>
+          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>SLA con tiempo de respuesta garantizado</li>
+        </ul>
+        <button class="btn-pricing btn-pricing-outline">Contactar Ventas</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ FAQ ════ -->
+<section id="section-faq" class="faq-section">
+  <div class="container">
+    <div class="faq-layout">
+      <div class="faq-sticky">
+        <div class="section-label">FAQ</div>
+        <h2 class="section-title">Preguntas <strong>técnicas</strong></h2>
+        <p class="faq-note">¿No encontraste tu respuesta? Nuestro equipo de ingeniería responde en menos de 4 horas.</p>
+        <a href="#section-pricing" class="btn-primary" style="margin-top:24px;display:inline-flex">
+          Contactar soporte
+          <svg viewBox="0 0 16 16" fill="none" style="width:14px;height:14px"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item open" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <h4>¿Cómo maneja YakuControl la conectividad en montañas remotas?</h4>
+            <div class="faq-toggle"><svg viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          </div>
+          <div class="faq-a">
+            <p>Utilizamos una red mesh propietaria donde cada nodo se comunica con un Gateway central. El Gateway opera con doble redundancia: redes LTE-M locales y la constelación satelital Iridium global, garantizando 99.9% de uptime sin importar el terreno. En zonas sin cobertura, los datos se almacenan localmente y se sincronizan en cuanto se restaura la conexión.</p>
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <h4>¿Los sensores resisten el agua de alta mineralización típica de los Andes?</h4>
+            <div class="faq-toggle"><svg viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          </div>
+          <div class="faq-a">
+            <p>Sí. Todos los sensores AcuaNode están construidos en titanio grado 5 con recubrimientos anti-incrustantes específicamente formulados para agua dulce de alta altitud con elevada concentración mineral. Están certificados para inmersión continua a 50 metros y soportan temperaturas entre -20°C y +60°C, cubriendo las condiciones más extremas de la sierra andina.</p>
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <h4>¿Puedo integrar mi sistema de aireación existente?</h4>
+            <div class="faq-toggle"><svg viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          </div>
+          <div class="faq-a">
+            <p>Absolutamente. YakuControl es compatible con la mayoría de sistemas industriales de aireación y alimentación mediante nuestra API abierta y controladores relay Modbus/RS-485. Nuestros técnicos de campo realizan una auditoría de compatibilidad completa durante el onboarding, sin costo adicional, y gestionan la integración de principio a fin.</p>
+          </div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <h4>¿Cómo funciona la IA predictiva y qué tan confiables son sus alertas?</h4>
+            <div class="faq-toggle"><svg viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          </div>
+          <div class="faq-a">
+            <p>Nuestros modelos están entrenados con datos de más de 3 años en granjas andinas. Analizan correlaciones entre temperatura, presión barométrica, oxígeno disuelto, actividad de peces y ciclos de alimentación para predecir eventos de estrés biológico. La tasa de falsos positivos es inferior al 2%, y el sistema aprende y se ajusta continuamente a las condiciones específicas de cada estanque.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ FOOTER ════ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-mark">
+            <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M8 4v4l2.5 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          </div>
+          <span>YakuControl</span>
+        </div>
+        <p class="footer-desc">Monitoreo de acuicultura de precisión para la frontera de alta altitud. Construido para la fiabilidad en los entornos más hostiles.</p>
+      </div>
+      <div>
+        <div class="footer-heading">Soluciones</div>
+        <div class="footer-links">
+          <a href="#">Calidad del Agua</a>
+          <a href="#">Motor de Alertas</a>
+          <a href="#">Comunicaciones Satelitales</a>
+          <a href="#">Sincronización de Hardware</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Empresa</div>
+        <div class="footer-links">
+          <a href="#">Tecnología</a>
+          <a href="#">Precios</a>
+          <a href="#">Política de Privacidad</a>
+          <a href="#">Soporte</a>
+        </div>
+      </div>
+      <div class="footer-newsletter">
+        <div class="footer-heading">Mantente Informado</div>
+        <p>Actualizaciones técnicas, mejores prácticas en acuicultura y noticias del sector andino.</p>
+        <div class="newsletter-row">
+          <input type="email" placeholder="correo@empresa.com"/>
+          <button>Unirse</button>
+        </div>
+        <div class="social-row">
+          <a href="#" class="soc-btn"><svg viewBox="0 0 16 16" fill="none"><path d="M14 2L9 7.5M2 2l5 5.5M2 14l4.5-5M14 14l-4.5-5M2 2h4l8 12h-4L2 2z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a href="#" class="soc-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.3"/><circle cx="11.5" cy="4.5" r=".5" fill="currentColor"/></svg></a>
+          <a href="#" class="soc-btn"><svg viewBox="0 0 16 16" fill="none"><path d="M2 4h12v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4z" stroke="currentColor" stroke-width="1.3"/><path d="M2 4l6 5 6-5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2024 YakuControl. Acuicultura de Precisión para los Andes. Todos los derechos reservados.</span>
+      <span class="footer-tag">v2.4.1 · build stable</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleFaq(item){
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!isOpen) item.classList.add('open');
+}
+
+// Animate bars on scroll
+const bars=document.querySelectorAll('.fd-bar,.bar-fill');
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.style.transition='height .6s ease';
+      observer.unobserve(e.target);
+    }
+  });
+},{threshold:.1});
+bars.forEach(b=>observer.observe(b));
+
+// Smooth counter animation for hero stats
+const countEls=document.querySelectorAll('.stat-num span');
+const numObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.style.animation='countUp .5s ease both';
+      numObs.unobserve(e.target);
+    }
+  });
+},{threshold:.5});
+countEls.forEach(el=>numObs.observe(el));
+</script>
+</body>
+</html>
