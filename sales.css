@@ -1,9 +1,11 @@
 .sales-section {
   padding:90px 0;
-  scroll-margin-top:90px}
+  scroll-margin-top:90px;
+}
 
 .trace-section {
-  background:var(--mist)}
+  background:var(--mist);
+}
 
 .trace-steps {
   list-style:none;
@@ -11,43 +13,52 @@
   grid-template-columns:repeat(3,minmax(0,1fr));
   gap:24px;
   padding:0;
-  margin:36px 0}
+  margin:36px 0;
+}
 
 .trace-steps li,.trace-demo {
   border:1px solid var(--mist-2);
   border-radius:var(--r);
   padding:24px;
-  background:var(--white)}
+  background:var(--white);
+}
 
 .trace-steps span {
   font-family:'DM Mono',monospace;
   color:var(--cyan-dark);
-  font-size:24px}
+  font-size:24px;
+}
 
 .trace-steps h3,.trace-demo h3 {
-  margin:12px 0}
+  margin:12px 0;
+}
 
 .trace-steps p,.trace-demo p {
   line-height:1.7;
-  color:var(--ink-3)}
+  color:var(--ink-3);
+}
 
 .trace-demo {
   margin-top:24px;
-  scroll-margin-top:100px}
+  scroll-margin-top:100px;
+}
 
 .contact-layout {
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:48px}
+  gap:48px;
+}
 
 .sales-form {
   display:grid;
-  gap:16px}
+  gap:16px;
+}
 
 .sales-form label {
   display:grid;
   gap:6px;
-  font-weight:600}
+  font-weight:600;
+}
 
 .sales-form input,.sales-form textarea {
   width:100%;
@@ -56,77 +67,93 @@
   border-radius:var(--r);
   font:inherit;
   background:var(--white);
-  color:var(--ink)}
+  color:var(--ink);
+}
 
 .sales-form input:focus,.sales-form textarea:focus {
   outline:2px solid var(--cyan-dark);
-  outline-offset:2px}
+  outline-offset:2px;
+}
 
 .sales-form [aria-invalid=true] {
-  border-color:#b42318}
+  border-color:#b42318;
+}
 
 .field-error {
   color:#b42318;
   font-size:13px;
-  min-height:1em}
+  min-height:1em;
+}
 
 .sales-form a {
   color:var(--cyan-dark);
-  text-decoration:underline}
+  text-decoration:underline;
+}
 
 .sales-form button {
   border:0;
   cursor:pointer;
-  justify-content:center}
+  justify-content:center;
+}
 
 .sales-form #sales-result {
   line-height:1.6;
-  font-weight:600}
+  font-weight:600;
+}
 
 #contact-note {
   margin-top:24px;
   line-height:1.7;
-  color:var(--ink-3)}
+  color:var(--ink-3);
+}
 
 .btn-pricing {
   text-decoration:none;
-  text-align:center}
+  text-align:center;
+}
 
 .legal {
   max-width:800px;
   margin:auto;
   padding:40px 24px;
   font:17px/1.7 system-ui;
-  color:#002b49}
+  color:#002b49;
+}
 
 .legal a {
-  color:#006c65}
+  color:#006c65;
+}
 
 .legal h2 {
-  margin-top:32px}
+  margin-top:32px;
+}
 
 @media(max-width:768px) {
   .trace-steps,.contact-layout {
-  grid-template-columns:1fr}
+    grid-template-columns:1fr;
+  }
 
-.sales-section {
-  padding:56px 0}
+  .sales-section {
+    padding:56px 0;
+  }
 
-.contact-layout {
-  gap:24px}
+  .contact-layout {
+    gap:24px;
+  }
 
-.site-header nav {
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px}
+  .site-header nav {
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+  }
 
-.site-header .header-inner {
-  flex-wrap:wrap;
-  gap:12px}
+  .site-header .header-inner {
+    flex-wrap:wrap;
+    gap:12px;
+  }
 
-.trace-steps {
-  gap:16px}
+  .trace-steps {
+    gap:16px;
+  }
 
 }
-
-
