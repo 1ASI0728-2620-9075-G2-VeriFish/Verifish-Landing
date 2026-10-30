@@ -13,3 +13,9 @@ Thumbs.db
 .env.*
 !.env.example
 *.log
+
+# Local browser tests and code intelligence
+.codegraph/
+__pycache__/
+.venv/
+.netlify/

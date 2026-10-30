@@ -613,6 +613,7 @@ nav a:hover{color:var(--ink);background:var(--mist)}
   .footer-grid{grid-template-columns:1fr}
 }
 </style>
+<link rel="stylesheet" href="sales.css">
 </head>
 <body>
 
@@ -635,7 +636,8 @@ nav a:hover{color:var(--ink);background:var(--mist)}
         <a href="#section-iot">Tecnología</a>
         <a href="#section-pricing">Precios</a>
         <a href="#section-faq">FAQ</a>
-        <a href="#section-pricing" class="btn-nav">Solicitar Demo</a>
+        <a href="#section-yakutrace">YakuTrace</a>
+        <a href="#section-contact" class="btn-nav">Solicitar Demo</a>
       </nav>
     </div>
   </div>
@@ -654,10 +656,10 @@ nav a:hover{color:var(--ink);background:var(--mist)}
           <em>Asegura</em> tus Bio-Activos.<br>
           <strong>Maximiza</strong> tu Rendimiento.
         </h1>
-        <p class="hero-sub anim-3">Ecosistemas inteligentes de IoT para la acuicultura andina. Monitoreo en tiempo real, IA predictiva y conectividad satelital para granjas de trucha a gran altitud.</p>
+        <p class="hero-sub anim-3">Ecosistemas inteligentes de IoT para la acuicultura andina. Monitoreo de temperatura, pH y turbidez, alertas y gestión de estanques para detectar a tiempo cambios en la calidad del agua.</p>
         <div class="hero-actions anim-4">
-          <a href="#section-pricing" class="btn-primary">
-            Agendar Auditoría Técnica
+          <a href="#section-contact" class="btn-primary">
+            Solicitar una demostración
             <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
           <a href="#section-iot" class="btn-ghost">
@@ -667,16 +669,16 @@ nav a:hover{color:var(--ink);background:var(--mist)}
         </div>
         <div class="hero-stats anim-4">
           <div class="stat-item">
-            <div class="stat-num"><span>99</span>.9%</div>
-            <div class="stat-label">Uptime garantizado</div>
+            <div class="stat-num"><span>3</span></div>
+            <div class="stat-label">Parámetros de agua</div>
           </div>
           <div class="stat-item">
-            <div class="stat-num"><span>&lt;1</span>s</div>
-            <div class="stat-label">Latencia de alerta</div>
+            <div class="stat-num"><span>IoT</span></div>
+            <div class="stat-label">Monitoreo centralizado</div>
           </div>
           <div class="stat-item">
-            <div class="stat-num"><span>12</span>h</div>
-            <div class="stat-label">Predicción anticipada</div>
+            <div class="stat-num"><span>QR</span></div>
+            <div class="stat-label">Trazabilidad en prototipo</div>
           </div>
         </div>
       </div>
@@ -1008,13 +1010,31 @@ nav a:hover{color:var(--ink);background:var(--mist)}
   </div>
 </section>
 
+<section id="section-yakutrace" class="sales-section trace-section">
+  <div class="container">
+    <div class="section-label">YakuTrace · Para compradores y supermercados</div>
+    <h2 class="section-title">Conoce el origen de <strong>cada lote</strong></h2>
+    <p class="section-sub">Trazabilidad para relacionar el lote de truchas con su historial y la calidad del agua registrada. TRACE es un complemento del monitoreo; su precio se definirá con las piscigranjas piloto.</p>
+    <ol class="trace-steps">
+      <li><span>01</span><h3>Registrar el lote</h3><p>La piscigranja registra el origen y los hitos del lote.</p></li>
+      <li><span>02</span><h3>Emitir el certificado</h3><p>El diseño del servicio reúne el historial en un certificado con código QR y una huella digital.</p></li>
+      <li><span>03</span><h3>Verificar por QR</h3><p>El comprador consulta el estado y contrasta la integridad del registro. Esto no garantiza que el dato original del sensor sea correcto.</p></li>
+    </ol>
+    <a class="btn-primary" href="#trace-demo">Ver cómo verificar un lote</a>
+    <aside id="trace-demo" class="trace-demo" aria-labelledby="trace-demo-title">
+      <h3 id="trace-demo-title">Demostración del flujo de verificación</h3>
+      <p>Al escanear el QR se consultará el estado del certificado: verificado, no válido, revocado o en proceso. La verificación pública está pendiente de publicación; esta explicación no verifica un lote real.</p>
+    </aside>
+  </div>
+</section>
+
 <!-- ════ PRICING ════ -->
 <section id="section-pricing" class="pricing-section">
   <div class="container">
     <div class="pricing-header">
       <div class="section-label">Planes</div>
       <h2 class="section-title">Precisión <strong>escalable</strong></h2>
-      <p class="section-sub" style="margin:0 auto;text-align:center">Desde granjas artesanales hasta conglomerados industriales. Sin contratos de permanencia en los primeros 30 días.</p>
+      <p class="section-sub" style="margin:0 auto;text-align:center">Suscripción mensual por estanque monitoreado. Los precios se validarán con las piscigranjas piloto; el complemento TRACE se cotiza por separado.</p>
     </div>
     <div class="pricing-grid">
       <!-- Básico -->
@@ -1022,52 +1042,52 @@ nav a:hover{color:var(--ink);background:var(--mist)}
         <div class="pc-name">Básico</div>
         <div class="pc-desc">Para monitoreo individual de estanques. Ideal para granjas menores de 5 unidades.</div>
         <div class="pc-price">
-          <div class="pc-amount">$39</div>
+          <div class="pc-amount" style="font-size:28px">Por definir</div>
           <div class="pc-period">por estanque / mes</div>
         </div>
         <div class="pc-divider"></div>
         <ul class="pc-features">
           <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Soporte AcuaNode estándar</li>
           <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Hasta 5 estanques</li>
-          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Alertas por app y SMS</li>
+          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Alertas en la aplicación</li>
           <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Dashboard YakuCore Web</li>
         </ul>
-        <button class="btn-pricing btn-pricing-outline">Comenzar</button>
+        <a href="https://yakucontrol-v2.web.app" class="btn-pricing btn-pricing-outline">Acceder a la Web</a>
       </div>
       <!-- Escala -->
       <div class="pricing-card featured">
-        <div class="pc-badge">Más popular</div>
-        <div class="pc-name">Escala</div>
+        <div class="pc-badge">Gestión de granja</div>
+        <div class="pc-name">Pro</div>
         <div class="pc-desc">Gestión profesional de granjas medianas con control remoto completo.</div>
         <div class="pc-price">
-          <div class="pc-amount" style="color:white">$109</div>
+          <div class="pc-amount" style="color:white;font-size:28px">Por definir</div>
           <div class="pc-period">por estanque / mes</div>
         </div>
         <div class="pc-divider"></div>
         <ul class="pc-features">
           <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Hasta 12 estanques</li>
           <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Control de hardware remoto</li>
-          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>IA predictiva completa</li>
+          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Historial de calidad del agua</li>
           <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Soporte de campo prioritario</li>
-          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Conectividad satelital Iridium</li>
+          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Gestión de equipos IoT</li>
         </ul>
-        <a href="https://yakufrontend.z13.web.core.windows.net/" class="btn-pricing btn-pricing-primary">Iniciar Prueba Gratis</a>
+        <a href="https://yakucontrol-v2.web.app" class="btn-pricing btn-pricing-primary">Acceder a la Web</a>
       </div>
       <!-- Corporativo -->
       <div class="pricing-card">
-        <div class="pc-name">Corporativo</div>
+        <div class="pc-name">Enterprise</div>
         <div class="pc-desc">Infraestructura personalizada multi-sitio para conglomerados industriales.</div>
         <div class="pc-price">
           <div class="pc-amount" style="font-size:28px;padding-top:8px">Personalizado</div>
         </div>
         <div class="pc-divider"></div>
         <ul class="pc-features">
-          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Nodos de monitoreo ilimitados</li>
+          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Cantidad de estanques a acordar</li>
           <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Reportes ejecutivos marca blanca</li>
           <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Calibración en sitio</li>
-          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>SLA con tiempo de respuesta garantizado</li>
+          <li><span class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Condiciones a acordar en el piloto</li>
         </ul>
-        <button class="btn-pricing btn-pricing-outline">Contactar Ventas</button>
+        <a href="#section-contact" class="btn-pricing btn-pricing-outline">Contactar Ventas</a>
       </div>
     </div>
   </div>
@@ -1093,7 +1113,7 @@ nav a:hover{color:var(--ink);background:var(--mist)}
             <div class="faq-toggle"><svg viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
           </div>
           <div class="faq-a">
-            <p>Utilizamos una red mesh propietaria donde cada nodo se comunica con un Gateway central. El Gateway opera con doble redundancia: redes LTE-M locales y la constelación satelital Iridium global, garantizando 99.9% de uptime sin importar el terreno. En zonas sin cobertura, los datos se almacenan localmente y se sincronizan en cuanto se restaura la conexión.</p>
+            <p>El prototipo comunica las lecturas mediante el Edge y el backend. La disponibilidad depende de la conexión y de los servicios desplegados. El Edge contempla una cola local para sincronizar las lecturas pendientes.</p>
           </div>
         </div>
         <div class="faq-item" onclick="toggleFaq(this)">
@@ -1102,7 +1122,7 @@ nav a:hover{color:var(--ink);background:var(--mist)}
             <div class="faq-toggle"><svg viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
           </div>
           <div class="faq-a">
-            <p>Sí. Todos los sensores AcuaNode están construidos en titanio grado 5 con recubrimientos anti-incrustantes específicamente formulados para agua dulce de alta altitud con elevada concentración mineral. Están certificados para inmersión continua a 50 metros y soportan temperaturas entre -20°C y +60°C, cubriendo las condiciones más extremas de la sierra andina.</p>
+            <p>La resistencia depende del modelo de sensor y de su instalación. En el piloto se deben verificar las especificaciones del fabricante, la calibración y el mantenimiento; el prototipo no acredita una certificación industrial.</p>
           </div>
         </div>
         <div class="faq-item" onclick="toggleFaq(this)">
@@ -1116,15 +1136,37 @@ nav a:hover{color:var(--ink);background:var(--mist)}
         </div>
         <div class="faq-item" onclick="toggleFaq(this)">
           <div class="faq-q">
-            <h4>¿Cómo funciona la IA predictiva y qué tan confiables son sus alertas?</h4>
+            <h4>¿Cómo funcionan las alertas del prototipo?</h4>
             <div class="faq-toggle"><svg viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
           </div>
           <div class="faq-a">
-            <p>Nuestros modelos están entrenados con datos de más de 3 años en granjas andinas. Analizan correlaciones entre temperatura, presión barométrica, oxígeno disuelto, actividad de peces y ciclos de alimentación para predecir eventos de estrés biológico. La tasa de falsos positivos es inferior al 2%, y el sistema aprende y se ajusta continuamente a las condiciones específicas de cada estanque.</p>
+            <p>Las alertas del prototipo se basan en umbrales de calidad del agua. No se ha validado un modelo predictivo ni una tasa de precisión comercial; la interpretación y la decisión final corresponden al responsable de la granja.</p>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<section id="section-contact" class="sales-section">
+  <div class="container contact-layout">
+    <div>
+      <div class="section-label">Contacto comercial</div>
+      <h2 class="section-title">Conversemos sobre <strong>tu piscigranja</strong></h2>
+      <p class="section-sub">Cuéntanos cuántos estanques tienes y qué necesitas monitorear.</p>
+      <p id="contact-note">Formulario de demostración: valida los datos en este navegador. No envía ni guarda una solicitud comercial.</p>
+    </div>
+    <form id="sales-form" class="sales-form" aria-describedby="contact-note" novalidate>
+      <label for="sales-name">Nombre<input id="sales-name" name="name" autocomplete="name" required maxlength="120" aria-describedby="error-name"><span id="error-name" class="field-error"></span></label>
+      <label for="sales-company">Empresa<input id="sales-company" name="company" autocomplete="organization" required maxlength="160" aria-describedby="error-company"><span id="error-company" class="field-error"></span></label>
+      <label for="sales-email">Correo<input id="sales-email" name="email" type="email" autocomplete="email" required maxlength="254" aria-describedby="error-email"><span id="error-email" class="field-error"></span></label>
+      <label for="sales-phone">Teléfono<input id="sales-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel" required pattern="[0-9]{7,15}" aria-describedby="error-phone"><span id="error-phone" class="field-error"></span></label>
+      <label for="sales-ponds">Cantidad de pozas<input id="sales-ponds" name="ponds" type="number" min="1" step="1" required aria-describedby="error-ponds"><span id="error-ponds" class="field-error"></span></label>
+      <label for="sales-message">Mensaje<textarea id="sales-message" name="message" rows="4" required maxlength="2000" aria-describedby="error-message"></textarea><span id="error-message" class="field-error"></span></label>
+      <p>Consulta los <a href="terminos.html">Términos y Condiciones</a> y el tratamiento de datos.</p>
+      <button type="submit" class="btn-primary">Validar datos de contacto</button>
+      <p id="sales-result" role="status" aria-live="polite"></p>
+    </form>
   </div>
 </section>
 
@@ -1154,28 +1196,21 @@ nav a:hover{color:var(--ink);background:var(--mist)}
         <div class="footer-heading">Empresa</div>
         <div class="footer-links">
           <a href="#">Tecnología</a>
-          <a href="#">Precios</a>
-          <a href="#">Política de Privacidad</a>
-          <a href="#">Soporte</a>
+          <a href="#section-pricing">Precios</a>
+          <a href="terminos.html#datos">Política de Privacidad</a>
+          <a href="terminos.html">Términos y Condiciones</a>
+          <a href="#section-contact">Contacto</a>
         </div>
       </div>
       <div class="footer-newsletter">
-        <div class="footer-heading">Mantente Informado</div>
-        <p>Actualizaciones técnicas, mejores prácticas en acuicultura y noticias del sector andino.</p>
-        <div class="newsletter-row">
-          <input type="email" placeholder="correo@empresa.com"/>
-          <button>Unirse</button>
-        </div>
-        <div class="social-row">
-          <a href="#" class="soc-btn"><svg viewBox="0 0 16 16" fill="none"><path d="M14 2L9 7.5M2 2l5 5.5M2 14l4.5-5M14 14l-4.5-5M2 2h4l8 12h-4L2 2z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          <a href="#" class="soc-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.3"/><circle cx="11.5" cy="4.5" r=".5" fill="currentColor"/></svg></a>
-          <a href="#" class="soc-btn"><svg viewBox="0 0 16 16" fill="none"><path d="M2 4h12v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4z" stroke="currentColor" stroke-width="1.3"/><path d="M2 4l6 5 6-5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></a>
-        </div>
+        <div class="footer-heading">Hablemos</div>
+        <p>Solicita información del piloto y del complemento TRACE.</p>
+        <a class="btn-primary" href="#section-contact">Contacto comercial</a>
       </div>
     </div>
     <div class="footer-bottom">
-      <span class="footer-copy">© 2024 YakuControl. Acuicultura de Precisión para los Andes. Todos los derechos reservados.</span>
-      <span class="footer-tag">v2.4.1 · build stable</span>
+      <span class="footer-copy">© 2026 YakuControl. Acuicultura de Precisión para los Andes. Todos los derechos reservados.</span>
+      <span class="footer-tag">Prototipo académico · Sprint 1</span>
     </div>
   </div>
 </footer>
@@ -1211,5 +1246,6 @@ const numObs=new IntersectionObserver(entries=>{
 },{threshold:.5});
 countEls.forEach(el=>numObs.observe(el));
 </script>
+<script src="sales.js"></script>
 </body>
 </html>
